@@ -1,5 +1,7 @@
 import React, { Component } from "react";
 import axios from "axios";
+import Emoji from "../real.png";
+import "./JokeList.css";
 
 class JokeList extends Component {
   static defaultProps = { numOfJokes: 10 };
@@ -23,7 +25,13 @@ class JokeList extends Component {
   render() {
     return (
       <div className='JokeList'>
-        <h6>JokeList</h6>
+        <div className='JokeList-sidebar'>
+          <h1 className='JokeList-title'>
+            <span>Dad</span> Jokes
+          </h1>
+          <img src={Emoji} alt={"Laughing emoji"} />
+          <button className='JokeList-getmore'>More Jokes</button>
+        </div>
         <div className='JokeList-jokes'>
           {this.state.jokes.map(joke => (
             <div>{joke}</div>
