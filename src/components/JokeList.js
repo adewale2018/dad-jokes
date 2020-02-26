@@ -1,5 +1,7 @@
 import React, { Component } from "react";
 import axios from "axios";
+import uuid from "uuid/v4";
+import Joke from "./Joke";
 import Emoji from "../real.png";
 import "./JokeList.css";
 
@@ -17,10 +19,17 @@ class JokeList extends Component {
       let res = await axios.get("https://icanhazdadjoke.com/", {
         headers: { Accept: "application/json" }
       });
-      jokes.push(res.data.joke);
+      jokes.push({ id: uuid(), text: res.data.joke, votes: 0 });
     }
 
     this.setState({ jokes: jokes });
+  }
+  handleVote(id, delta) {
+    this.setState(curState => ({
+      jokes: curState.jokes.map(joke =>
+        joke.id === id ? { ...joke, votes: joke.votes + delta } : joke
+      )
+    }));
   }
   render() {
     return (
@@ -34,7 +43,13 @@ class JokeList extends Component {
         </div>
         <div className='JokeList-jokes'>
           {this.state.jokes.map(joke => (
-            <div>{joke}</div>
+            <Joke
+              key={joke.id}
+              votes={joke.votes}
+              text={joke.text}
+              upvote={() => this.handleVote(joke.id, 1)}
+              downvote={() => this.handleVote(joke.id, -1)}
+            />
           ))}
         </div>
       </div>
