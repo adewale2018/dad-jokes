@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import axios from "axios";
-import uuid from "uuid/v4";
+import { v4 as uuidv4 } from "uuid";
 import Joke from "./Joke";
 import Emoji from "../real.png";
 import "./JokeList.css";
@@ -19,7 +19,7 @@ class JokeList extends Component {
       let res = await axios.get("https://icanhazdadjoke.com/", {
         headers: { Accept: "application/json" }
       });
-      jokes.push({ id: uuid(), text: res.data.joke, votes: 0 });
+      jokes.push({ id: uuidv4(), text: res.data.joke, votes: 0 });
     }
 
     this.setState({ jokes: jokes });
