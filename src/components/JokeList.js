@@ -13,6 +13,8 @@ class JokeList extends Component {
     this.state = {
       jokes: JSON.parse(window.localStorage.getItem("jokes")) || "[]"
     };
+
+    this.handleClick = this.handleClick.bind(this);
   }
 
   componentDidMount() {
@@ -27,15 +29,27 @@ class JokeList extends Component {
       jokes.push({ id: uuidv4(), text: res.data.joke, votes: 0 });
     }
 
-    this.setState({ jokes: jokes });
-    window.localStorage.setItem("jokes", JSON.stringify(jokes));
+    this.setState(
+      st => ({
+        jokes: [...st.jokes, ...jokes]
+      }),
+      () =>
+        window.localStorage.setItem("jokes", JSON.stringify(this.state.jokes))
+    );
   }
   handleVote(id, delta) {
-    this.setState(curState => ({
-      jokes: curState.jokes.map(joke =>
-        joke.id === id ? { ...joke, votes: joke.votes + delta } : joke
-      )
-    }));
+    this.setState(
+      curState => ({
+        jokes: curState.jokes.map(joke =>
+          joke.id === id ? { ...joke, votes: joke.votes + delta } : joke
+        )
+      }),
+      () =>
+        window.localStorage.setItem("jokes", JSON.stringify(this.state.jokes))
+    );
+  }
+  handleClick() {
+    this.getJokes();
   }
   render() {
     return (
@@ -45,7 +59,9 @@ class JokeList extends Component {
             <span>Dad</span> Jokes
           </h1>
           <img src={Emoji} alt={"Laughing emoji"} />
-          <button className='JokeList-getmore'>More Jokes</button>
+          <button className='JokeList-getmore' onClick={this.handleClick}>
+            More Jokes
+          </button>
         </div>
         <div className='JokeList-jokes'>
           {this.state.jokes.map(joke => (
