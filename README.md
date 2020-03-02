@@ -1,4 +1,4 @@
-### Title: Dad's Jokes
+# Title: Dad's Jokes
 
 ## View here: [Dad's Jokes App](https://dad-s-jokes.firebaseapp.com)
 
